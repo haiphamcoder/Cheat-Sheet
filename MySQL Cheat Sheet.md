@@ -155,7 +155,16 @@ A comprehensive guide for Senior DBAs and Developers to master MySQL operations,
 | `mysql -u user -p db < backup.sql` | Restore database from a file (Shell command) |
 | `CHECK TABLE table_name;` | Check table for errors |
 | `OPTIMIZE TABLE table_name;` | Reorganize physical storage and reclaim space |
-| `SELECT table_name, data_length + index_length AS size FROM information_schema.TABLES;` | Check table disk usage |
+
+---
+
+## 📊 Storage Analysis (Disk Usage)
+
+| Command | Effect |
+| :--- | :--- |
+| `SELECT table_schema as 'DB', ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) as 'Size (MB)' FROM information_schema.TABLES GROUP BY table_schema;` | Show total size of each database |
+| `SELECT table_name, ROUND((data_length + index_length) / 1024 / 1024, 2) as 'Size (MB)' FROM information_schema.TABLES WHERE table_schema = 'db_name' ORDER BY (data_length + index_length) DESC;` | Show size of all tables in a DB (Sorted) |
+| `SELECT table_name, ROUND(data_length / 1024 / 1024, 2) as 'Data (MB)', ROUND(index_length / 1024 / 1024, 2) as 'Index (MB)' FROM information_schema.TABLES WHERE table_schema = 'db_name';` | Breakdown of Data vs Index size |
 
 ---
 
