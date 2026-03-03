@@ -91,6 +91,7 @@ A comprehensive guide for Senior Data Engineers to master Apache HBase operation
 ## ⚙️ Advanced Features
 
 ### 📸 Snapshots
+
 | Command | Effect |
 | :--- | :--- |
 | `snapshot 'tbl', 'snap_name'` | Create a point-in-time snapshot |
@@ -99,6 +100,7 @@ A comprehensive guide for Senior Data Engineers to master Apache HBase operation
 | `delete_snapshot 'snap_name'` | Delete a snapshot |
 
 ### 🗺️ Region Management
+
 | Command | Effect |
 | :--- | :--- |
 | `split 'tbl', 'row_split_key'` | Manually split a region |
@@ -108,6 +110,7 @@ A comprehensive guide for Senior Data Engineers to master Apache HBase operation
 | `move 'encoded_region_id', 'target_server'` | Manually move a region to another server |
 
 ### 🧪 Filtering (Basic Scan Examples)
+
 | Filter Type | Scan Example |
 | :--- | :--- |
 | **PrefixFilter** | `scan 'tbl', {FILTER => "PrefixFilter('user_')"}` |
@@ -129,9 +132,9 @@ A comprehensive guide for Senior Data Engineers to master Apache HBase operation
 
 ## 💡 Best Practices (Data Engineer Insights)
 
-1.  **RowKey Design**: Avoid sequential keys (e.g., timestamps). Salting or hashing RowKeys prevents **Hotspotting** on a single RegionServer.
-2.  **Column Families**: Keep the number of CFs low (usually 1-3). Large numbers of CFs hurt compaction performance.
-3.  **Disable before DDL**: Always `disable` your table before `alter` or `drop`.
-4.  **Scan with Care**: Always use `STARTROW` and `STOPROW` for scans in production to avoid full table scans.
-5.  **Pre-splitting**: For high-volume tables, pre-split regions during table creation to distribute load immediately.
-    *   *Example*: `create 'tbl', 'cf', {SPLITS => ['a', 'b', 'c']}`
+1. **RowKey Design**: Avoid sequential keys (e.g., timestamps). Salting or hashing RowKeys prevents **Hotspotting** on a single RegionServer.
+2. **Column Families**: Keep the number of CFs low (usually 1-3). Large numbers of CFs hurt compaction performance.
+3. **Disable before DDL**: Always `disable` your table before `alter` or `drop`.
+4. **Scan with Care**: Always use `STARTROW` and `STOPROW` for scans in production to avoid full table scans.
+5. **Pre-splitting**: For high-volume tables, pre-split regions during table creation to distribute load immediately.
+    * *Example*: `create 'tbl', 'cf', {SPLITS => ['a', 'b', 'c']}`
