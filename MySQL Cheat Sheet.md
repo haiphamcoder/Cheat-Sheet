@@ -44,6 +44,8 @@ A comprehensive guide for Senior DBAs and Developers to master MySQL operations,
 | `ALTER TABLE tbl DROP COLUMN col_name;` | Remove a column from a table |
 | `TRUNCATE TABLE table_name;` | Delete all rows and reset auto-increment |
 | `DROP TABLE table_name;` | Delete the entire table structure and data |
+| `RENAME TABLE old_tbl TO new_tbl;` | Rename an existing table |
+| `ALTER TABLE tbl RENAME COLUMN old TO new;` | Rename a column (MySQL 8.0+) |
 
 ---
 
@@ -154,6 +156,28 @@ A comprehensive guide for Senior DBAs and Developers to master MySQL operations,
 | `CHECK TABLE table_name;` | Check table for errors |
 | `OPTIMIZE TABLE table_name;` | Reorganize physical storage and reclaim space |
 | `SELECT table_name, data_length + index_length AS size FROM information_schema.TABLES;` | Check table disk usage |
+
+---
+
+## 🛡️ Transactions
+
+| Command | Effect |
+| :--- | :--- |
+| `START TRANSACTION;` | Begin a new transaction (Disables auto-commit) |
+| `COMMIT;` | Save all changes made during the transaction |
+| `ROLLBACK;` | Undo all changes since the transaction started |
+| `SET autocommit = 0;` | Disable automatic committing of every statement |
+
+---
+
+## 🎭 Casting & Conversion
+
+| Command | Effect |
+| :--- | :--- |
+| `CAST(val AS SIGNED);` | Convert value to a signed integer |
+| `CAST(val AS DECIMAL(10,2));` | Convert value to decimal with precision |
+| `CAST(col AS CHAR);` | Convert column value to string |
+| `CONVERT(val, SIGNED);` | Alternative syntax for type conversion |
 
 ---
 
