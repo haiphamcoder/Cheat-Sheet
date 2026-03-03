@@ -1,332 +1,180 @@
-# MySQL Cheat Sheet
+# 🐬 MySQL Cheat Sheet
+
+A comprehensive guide for Senior DBAs and Developers to master MySQL operations, from basic administration to performance tuning.
+
+---
+
+## 🔐 Access & User Management
+
+| Command | Effect |
+| :--- | :--- |
+| `mysql -u root -p` | Log in as root user (securely prompts for password) |
+| `mysql -h host -u user -p` | Connect to a remote MySQL host |
+| `CREATE USER 'user'@'localhost' IDENTIFIED BY 'pass';` | Create a new local user |
+| `GRANT ALL PRIVILEGES ON db.* TO 'user'@'host';` | Grant all privileges on a specific database |
+| `REVOKE UPDATE ON db.* FROM 'user'@'host';` | Revoke specific permissions from a user |
+| `ALTER USER 'user'@'localhost' IDENTIFIED BY 'new_pass';` | Change user password (MySQL 5.7.6+) |
+| `DROP USER 'user'@'localhost';` | Delete a user account |
+| `SHOW GRANTS FOR 'user'@'localhost';` | View permissions for a specific user |
+| `FLUSH PRIVILEGES;` | Reload the privileges from the grant tables |
+
+---
+
+## 📂 Database Operations
+
+| Command | Effect |
+| :--- | :--- |
+| `SHOW DATABASES;` | List all databases on the server |
+| `CREATE DATABASE db_name;` | Create a new database |
+| `DROP DATABASE db_name;` | Delete a database (⚠️ Irreversible) |
+| `USE db_name;` | Select the database to work with |
+| `SELECT DATABASE();` | Show the currently selected database |
+
+---
+
+## 🏗️ Table Management
+
+| Command | Effect |
+| :--- | :--- |
+| `SHOW TABLES;` | List all tables in the current database |
+| `DESCRIBE table_name;` | View table structure (columns, types, keys) |
+| `CREATE TABLE table (...) ENGINE=InnoDB;` | Create a new table with specific engine |
+| `ALTER TABLE tbl ADD col_name DataType;` | Add a new column to an existing table |
+| `ALTER TABLE tbl MODIFY col_name NewDataType;` | Change the data type of a column |
+| `ALTER TABLE tbl DROP COLUMN col_name;` | Remove a column from a table |
+| `TRUNCATE TABLE table_name;` | Delete all rows and reset auto-increment |
+| `DROP TABLE table_name;` | Delete the entire table structure and data |
+
+---
+
+## 💎 Data Types
+
+| Category | Type | Description / Range |
+| :--- | :--- | :--- |
+| **Numeric** | `TINYINT` | -128 to 127 (Unsigned: 0 to 255) |
+| | `INT` / `INTEGER` | -2.1B to 2.1B (Unsigned: 0 to 4.2B) |
+| | `BIGINT` | Largest integer (8 bytes) |
+| | `DECIMAL(M,D)` | Exact fixed-point (Best for currency) |
+| | `FLOAT` / `DOUBLE` | Approximate floating-point values |
+| **String** | `CHAR(N)` | Fixed-length string (Right-padded) |
+| | `VARCHAR(N)` | Variable-length string (Max 65,535 chars) |
+| | `TEXT` | Long string (Up to 64KB) |
+| | `LONGTEXT` | Maximum string length (Up to 4GB) |
+| **Binary** | `BINARY` / `VARBINARY` | Binary strings (Byte strings) |
+| | `BLOB` / `LONGBLOB` | Binary Large Objects (Images/Files) |
+| **Date/Time** | `DATE` | 'YYYY-MM-DD' |
+| | `DATETIME` / `TIMESTAMP` | 'YYYY-MM-DD HH:MM:SS' |
+
+---
+
+## 🔎 Querying Data (DML)
+
+| Command | Effect |
+| :--- | :--- |
+| `SELECT * FROM tbl WHERE col = 'val';` | Basic selection with filter |
+| `SELECT col1, col2 FROM tbl ORDER BY col1 DESC;` | Select specific columns with sorting |
+| `SELECT * FROM tbl LIMIT 10 OFFSET 20;` | Pagination (Fetch 10 rows starting from row 21) |
+| `SELECT * FROM tbl WHERE col LIKE 'A%';` | Pattern matching (Starts with 'A') |
+| `SELECT category, COUNT(*) FROM tbl GROUP BY category;` | Aggregation by group |
+| `SELECT category, AVG(val) FROM tbl GROUP BY category HAVING AVG(val) > 100;` | Group filtering (HAVING works after GROUP BY) |
+
+---
+
+## 🧮 Operators
+
+| Category | Operators |
+| :--- | :--- |
+| **Logical** | `AND`, `OR`, `NOT`, `XOR`, `&&`, `\|\|`, `!` |
+| **Comparison** | `=`, `<>`, `!=`, `<`, `<=`, `>`, `>=` |
+| | `IS NULL`, `IS NOT NULL`, `BETWEEN`, `IN`, `LIKE` |
+| | `EXISTS`, `IN`, `ALL`, `ANY`, `SOME` |
+| **Arithmetic** | `+` (Add), `-` (Sub), `*` (Mult), `/` (Div), `%` / `MOD` (Modulo) |
+| **Bitwise** | `&` (AND), `\|` (OR), `^` (XOR), `~` (Invert), `<<` (Left shift) |
+| **Compound** | `+=`, `-=`, `*=`, `/=`, `%=`, `&=`, `^=`, `\|=` |
+
+---
+
+## 🔗 Joins & Unions
+
+> [!NOTE]
+> **INNER JOIN**: Matches in both tables. **LEFT JOIN**: All from left + matches from right. **RIGHT JOIN**: All from right + matches from left.
+
+| Command | Effect |
+| :--- | :--- |
+| `SELECT * FROM a INNER JOIN b ON a.id = b.a_id;` | Combine rows where keys match in both tables |
+| `SELECT * FROM a LEFT JOIN b ON a.id = b.a_id;` | All rows from 'a', and matching rows from 'b' |
+| `SELECT col FROM a UNION SELECT col FROM b;` | Combine results and remove duplicates |
+| `SELECT col FROM a UNION ALL SELECT col FROM b;` | Combine results including duplicates (Faster) |
 
-> Help with SQL commands to interact with a MySQL database
+---
 
-## MySQL Locations
+## ✍️ Modifying Data (DML)
 
-* Mac             */usr/local/mysql/bin*
-* Windows         */Program Files/MySQL/MySQL *version*/bin*
-* Xampp           */xampp/mysql/bin*
+> [!WARNING]
+> Always use a **WHERE** clause with `UPDATE` and `DELETE` commands to avoid affecting the entire table.
 
-## Add mysql to your PATH
+| Command | Effect |
+| :--- | :--- |
+| `INSERT INTO tbl (c1, c2) VALUES (v1, v2);` | Insert a single record |
+| `INSERT INTO tbl (c1) VALUES (v1), (v2), (v3);` | Bulk insert (Much faster for large datasets) |
+| `UPDATE tbl SET c1 = v1 WHERE id = 1;` | Update specific values |
+| `DELETE FROM tbl WHERE id = 1;` | Delete specific records |
 
-```bash
-# Current Session
-export PATH=${PATH}:/usr/local/mysql/bin
-# Permanantly
-echo 'export PATH="/usr/local/mysql/bin:$PATH"' >> ~/.bash_profile
-```
+---
 
-On Windows - <https://www.qualitestgroup.com/resources/knowledge-center/how-to-guide/add-mysql-path-windows/>
+## ⚡ Indexes & Constraints
 
-## Login
+| Command | Effect |
+| :--- | :--- |
+| `ALTER TABLE tbl ADD PRIMARY KEY (id);` | Add Primary Key constraint |
+| `ALTER TABLE tbl ADD UNIQUE (column);` | Ensure all values in a column are unique |
+| `CREATE INDEX idx_name ON tbl (col1, col2);` | Create a composite index for performance |
+| `DROP INDEX idx_name ON tbl;` | Remove an index |
+| `ALTER TABLE tbl ADD FOREIGN KEY (col) REFERENCES parent(id);` | Define relationship between tables |
 
-```bash
-mysql -u root -p
-```
+---
 
-## Show Users
+## ⚙️ Stored Procedures
 
-```sql
-SELECT User, Host FROM mysql.user;
-```
+| Command | Effect |
+| :--- | :--- |
+| `CREATE PROCEDURE proc_name() BEGIN ... END;` | Define a new stored procedure |
+| `CALL proc_name();` | Execute a stored procedure |
+| `SHOW PROCEDURE STATUS WHERE Db = 'db_name';` | List all procedures in a database |
+| `DROP PROCEDURE IF EXISTS proc_name;` | Delete a stored procedure |
 
-## Create User
+---
 
-```sql
-CREATE USER 'someuser'@'localhost' IDENTIFIED BY 'somepassword';
-```
+## 🛠️ Database Maintenance
 
-## Grant All Priveleges On All Databases
+| Command | Effect |
+| :--- | :--- |
+| `mysqldump -u user -p db > backup.sql` | Backup database to a file (Shell command) |
+| `mysql -u user -p db < backup.sql` | Restore database from a file (Shell command) |
+| `CHECK TABLE table_name;` | Check table for errors |
+| `OPTIMIZE TABLE table_name;` | Reorganize physical storage and reclaim space |
+| `SELECT table_name, data_length + index_length AS size FROM information_schema.TABLES;` | Check table disk usage |
 
-```sql
-GRANT ALL PRIVILEGES ON * . * TO 'someuser'@'localhost';
-FLUSH PRIVILEGES;
-```
+---
 
-## Show Grants
+## 🚀 Performance Tuning
 
-```sql
-SHOW GRANTS FOR 'someuser'@'localhost';
-```
+| Command | Effect |
+| :--- | :--- |
+| `EXPLAIN SELECT ...;` | Analyze query execution plan (Index check) |
+| `SHOW PROCESSLIST;` | List active threads and running queries |
+| `KILL query_id;` | Terminate a long-running or hung query |
+| `SHOW VARIABLES LIKE 'max_connections';` | View server configuration variables |
+| `SHOW STATUS LIKE 'Threads_connected';` | View real-time server metrics |
+| `SET GLOBAL Slow_query_log = 'ON';` | Enable slow query logging for analysis |
 
-## Remove Grants
+---
 
-```sql
-REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'someuser'@'localhost';
-```
+## 🪄 Common Functions
 
-## Delete User
-
-```sql
-DROP USER 'someuser'@'localhost';
-```
-
-## Exit
-
-```sql
-exit;
-```
-
-## Show Databases
-
-```sql
-SHOW DATABASES
-```
-
-## Create Database
-
-```sql
-CREATE DATABASE acme;
-```
-
-## Delete Database
-
-```sql
-DROP DATABASE acme;
-```
-
-## Select Database
-
-```sql
-USE acme;
-```
-
-## Create Table
-
-```sql
-CREATE TABLE users(
-id INT AUTO_INCREMENT,
-   first_name VARCHAR(100),
-   last_name VARCHAR(100),
-   email VARCHAR(50),
-   password VARCHAR(20),
-   location VARCHAR(100),
-   dept VARCHAR(100),
-   is_admin TINYINT(1),
-   register_date DATETIME,
-   PRIMARY KEY(id)
-);
-```
-
-## Delete / Drop Table
-
-```sql
-DROP TABLE tablename;
-```
-
-## Show Tables
-
-```sql
-SHOW TABLES;
-```
-
-## Insert Row / Record
-
-```sql
-INSERT INTO users (first_name, last_name, email, password, location, dept, is_admin, register_date) values ('Brad', 'Traversy', 'brad@gmail.com', '123456','Massachusetts', 'development', 1, now());
-```
-
-## Insert Multiple Rows
-
-```sql
-INSERT INTO users (first_name, last_name, email, password, location, dept,  is_admin, register_date) values ('Fred', 'Smith', 'fred@gmail.com', '123456', 'New York', 'design', 0, now()), ('Sara', 'Watson', 'sara@gmail.com', '123456', 'New York', 'design', 0, now()),('Will', 'Jackson', 'will@yahoo.com', '123456', 'Rhode Island', 'development', 1, now()),('Paula', 'Johnson', 'paula@yahoo.com', '123456', 'Massachusetts', 'sales', 0, now()),('Tom', 'Spears', 'tom@yahoo.com', '123456', 'Massachusetts', 'sales', 0, now());
-```
-
-## Select
-
-```sql
-SELECT * FROM users;
-SELECT first_name, last_name FROM users;
-```
-
-## Where Clause
-
-```sql
-SELECT * FROM users WHERE location='Massachusetts';
-SELECT * FROM users WHERE location='Massachusetts' AND dept='sales';
-SELECT * FROM users WHERE is_admin = 1;
-SELECT * FROM users WHERE is_admin > 0;
-```
-
-## Delete Row
-
-```sql
-DELETE FROM users WHERE id = 6;
-```
-
-## Update Row
-
-```sql
-UPDATE users SET email = 'freddy@gmail.com' WHERE id = 2;
-
-```
-
-## Add New Column
-
-```sql
-ALTER TABLE users ADD age VARCHAR(3);
-```
-
-## Modify Column
-
-```sql
-ALTER TABLE users MODIFY COLUMN age INT(3);
-```
-
-## Order By (Sort)
-
-```sql
-SELECT * FROM users ORDER BY last_name ASC;
-SELECT * FROM users ORDER BY last_name DESC;
-```
-
-## Concatenate Columns
-
-```sql
-SELECT CONCAT(first_name, ' ', last_name) AS 'Name', dept FROM users;
-
-```
-
-## Select Distinct Rows
-
-```sql
-SELECT DISTINCT location FROM users;
-
-```
-
-## Between (Select Range)
-
-```sql
-SELECT * FROM users WHERE age BETWEEN 20 AND 25;
-```
-
-## Like (Searching)
-
-```sql
-SELECT * FROM users WHERE dept LIKE 'd%';
-SELECT * FROM users WHERE dept LIKE 'dev%';
-SELECT * FROM users WHERE dept LIKE '%t';
-SELECT * FROM users WHERE dept LIKE '%e%';
-```
-
-## Not Like
-
-```sql
-SELECT * FROM users WHERE dept NOT LIKE 'd%';
-```
-
-## IN
-
-```sql
-SELECT * FROM users WHERE dept IN ('design', 'sales');
-```
-
-## Create & Remove Index
-
-```sql
-CREATE INDEX LIndex On users(location);
-DROP INDEX LIndex ON users;
-```
-
-## New Table With Foreign Key (Posts)
-
-```sql
-CREATE TABLE posts(
-id INT AUTO_INCREMENT,
-   user_id INT,
-   title VARCHAR(100),
-   body TEXT,
-   publish_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-   PRIMARY KEY(id),
-   FOREIGN KEY (user_id) REFERENCES users(id)
-);
-```
-
-## Add Data to Posts Table
-
-```sql
-INSERT INTO posts(user_id, title, body) VALUES (1, 'Post One', 'This is post one'),(3, 'Post Two', 'This is post two'),(1, 'Post Three', 'This is post three'),(2, 'Post Four', 'This is post four'),(5, 'Post Five', 'This is post five'),(4, 'Post Six', 'This is post six'),(2, 'Post Seven', 'This is post seven'),(1, 'Post Eight', 'This is post eight'),(3, 'Post Nine', 'This is post none'),(4, 'Post Ten', 'This is post ten');
-```
-
-## INNER JOIN
-
-```sql
-SELECT
-  users.first_name,
-  users.last_name,
-  posts.title,
-  posts.publish_date
-FROM users
-INNER JOIN posts
-ON users.id = posts.user_id
-ORDER BY posts.title;
-```
-
-## New Table With 2 Foriegn Keys
-
-```sql
-CREATE TABLE comments(
- id INT AUTO_INCREMENT,
-    post_id INT,
-    user_id INT,
-    body TEXT,
-    publish_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY(id),
-    FOREIGN KEY(user_id) references users(id),
-    FOREIGN KEY(post_id) references posts(id)
-);
-```
-
-## Add Data to Comments Table
-
-```sql
-INSERT INTO comments(post_id, user_id, body) VALUES (1, 3, 'This is comment one'),(2, 1, 'This is comment two'),(5, 3, 'This is comment three'),(2, 4, 'This is comment four'),(1, 2, 'This is comment five'),(3, 1, 'This is comment six'),(3, 2, 'This is comment six'),(5, 4, 'This is comment seven'),(2, 3, 'This is comment seven');
-```
-
-## Left Join
-
-```sql
-SELECT
-comments.body,
-posts.title
-FROM comments
-LEFT JOIN posts ON posts.id = comments.post_id
-ORDER BY posts.title;
-
-```
-
-## Join Multiple Tables
-
-```sql
-SELECT
-comments.body,
-posts.title,
-users.first_name,
-users.last_name
-FROM comments
-INNER JOIN posts on posts.id = comments.post_id
-INNER JOIN users on users.id = comments.user_id
-ORDER BY posts.title;
-
-```
-
-## Aggregate Functions
-
-```sql
-SELECT COUNT(id) FROM users;
-SELECT MAX(age) FROM users;
-SELECT MIN(age) FROM users;
-SELECT SUM(age) FROM users;
-SELECT UCASE(first_name), LCASE(last_name) FROM users;
-
-```
-
-## Group By
-
-```sql
-SELECT age, COUNT(age) FROM users GROUP BY age;
-SELECT age, COUNT(age) FROM users WHERE age > 20 GROUP BY age;
-SELECT age, COUNT(age) FROM users GROUP BY age HAVING count(age) >=2;
-
-```
+| Type | Examples |
+| :--- | :--- |
+| **String** | `CONCAT()`, `SUBSTRING()`, `UPPER()`, `LOWER()`, `TRIM()`, `LENGTH()` |
+| **Numeric** | `ROUND()`, `ABS()`, `CEILING()`, `FLOOR()`, `RAND()` |
+| **Date/Time** | `NOW()`, `CURDATE()`, `DATEDIFF()`, `DATE_FORMAT()`, `STR_TO_DATE()` |
+| **Control** | `IF(expr, v1, v2)`, `COALESCE(v1, v2, ...)`, `CASE WHEN ... THEN ... ELSE ... END` |
