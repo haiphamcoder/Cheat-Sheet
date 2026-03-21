@@ -11,6 +11,7 @@ Our goal is to provide concise, yet deep technical references that go beyond the
 | Cheat Sheet | Description | Focus Areas |
 | :--- | :--- | :--- |
 | [📂 Terminal Cheat Sheet](./Terminal%20Cheat%20Sheet.md) | Modern Linux/Unix CLI mastery | File Management, Networking, Security, Monitoring |
+| [🌿 Git Cheat Sheet](./Git%20Cheat%20Sheet.md) | Version control for daily dev & collaboration | Branches, remotes, stash, history, undo & safety |
 | [🐳 Docker Cheat Sheet](./Docker%20Cheat%20Sheet.md) | Containers, images, Dockerfile & Compose | CLI, registry, multi-stage builds, cleanup & safety |
 | [🌐 HTTP Cheat Sheet](./HTTP%20Cheat%20Sheet.md) | HTTP/1.1 semantics & APIs quick reference | Methods, Headers, Status Codes (RFC 9110/9111), `curl` |
 | [🔎 Elasticsearch Cheat Sheet](./Elasticsearch%20Cheat%20Sheet.md) | Production Elasticsearch handbook-style guide | REST APIs, Query DSL, Aggregations, Mapping, Ops & Troubleshooting |
