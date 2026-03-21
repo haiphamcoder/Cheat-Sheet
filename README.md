@@ -11,6 +11,8 @@ Our goal is to provide concise, yet deep technical references that go beyond the
 | Cheat Sheet | Description | Focus Areas |
 | :--- | :--- | :--- |
 | [📂 Terminal Cheat Sheet](./Terminal%20Cheat%20Sheet.md) | Modern Linux/Unix CLI mastery | File Management, Networking, Security, Monitoring |
+| [🌐 HTTP Cheat Sheet](./HTTP%20Cheat%20Sheet.md) | HTTP/1.1 semantics & APIs quick reference | Methods, Headers, Status Codes (RFC 9110/9111), `curl` |
+| [🔎 Elasticsearch Cheat Sheet](./Elasticsearch%20Cheat%20Sheet.md) | Production Elasticsearch handbook-style guide | REST APIs, Query DSL, Aggregations, Mapping, Ops & Troubleshooting |
 | [🐬 MySQL Cheat Sheet](./MySQL%20Cheat%20Sheet.md) | Senior DBA & Developer guide | Administration, Performance Tuning, Storage Analysis |
 | [🐘 HBase Cheat Sheet](./HBase%20Cheat%20Sheet.md) | Senior Data Engineer reference | Big Data, Region Management, RowKey Design |
 
@@ -23,6 +25,7 @@ Our goal is to provide concise, yet deep technical references that go beyond the
 - **Modern Tools**: Recommends modern alternatives (e.g., `ip` over `ifconfig`, `ss` over `netstat`).
 - **Safety First**: Clear warnings for destructive commands (`rm -rf`, `DROP DATABASE`, etc.).
 - **Storage & Performance**: Specialized sections for disk usage analysis and query optimization.
+- **Search & Protocols**: Deep dives into distributed search (Elasticsearch) and HTTP semantics for backend work.
 
 ---
 
