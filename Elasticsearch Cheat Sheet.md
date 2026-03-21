@@ -266,7 +266,7 @@ GET my_index/_search
 }
 ```
 
-#### `range`
+#### `range` (term-level query)
 
 ```bash
 GET my_index/_search
@@ -422,7 +422,7 @@ GET my_index/_search
 }
 ```
 
-#### `range`
+#### `range` aggregation (buckets)
 
 ```bash
 GET my_index/_search
