@@ -13,6 +13,7 @@ Our goal is to provide concise, yet deep technical references that go beyond the
 | [📂 Terminal Cheat Sheet](./Terminal%20Cheat%20Sheet.md) | Modern Linux/Unix CLI mastery | File Management, Networking, Security, Monitoring |
 | [🌐 HTTP Cheat Sheet](./HTTP%20Cheat%20Sheet.md) | HTTP/1.1 semantics & APIs quick reference | Methods, Headers, Status Codes (RFC 9110/9111), `curl` |
 | [🔎 Elasticsearch Cheat Sheet](./Elasticsearch%20Cheat%20Sheet.md) | Production Elasticsearch handbook-style guide | REST APIs, Query DSL, Aggregations, Mapping, Ops & Troubleshooting |
+| [🧩 Microservices Cheat Sheet](./Microservices%20Cheat%20Sheet.md) | Distributed architecture & operations reference | Design principles, Docker/K8s, messaging, data patterns, observability |
 | [🐬 MySQL Cheat Sheet](./MySQL%20Cheat%20Sheet.md) | Senior DBA & Developer guide | Administration, Performance Tuning, Storage Analysis |
 | [🐘 HBase Cheat Sheet](./HBase%20Cheat%20Sheet.md) | Senior Data Engineer reference | Big Data, Region Management, RowKey Design |
 
